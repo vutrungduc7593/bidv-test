@@ -130,8 +130,7 @@ if (require.main === module) {
 
   const postmanContent = cloneObject(COLLECTION_TEMPLATE);
 
-  postmanContent.info.name = `Generated Collection ${records.length}`;
-  postmanContent.item = postmanRecords;
+  postmanContent.info.name = `Collection: Total ${records.length} APIs at ${new Date().toISOString()}`; postmanContent.item = postmanRecords;
 
   exportJson("./data/generated.postman_collection.json", postmanContent);
 }
