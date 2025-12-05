@@ -150,11 +150,20 @@ function replaceObjInScript(execArray, jsonData) {
 
     // Split into lines and format as const obj = {...};
     const jsonLines = jsonString.split("\n");
-    const newObjLines = [
-        "const obj = " + jsonLines[0], // First line: const obj = {
-        ...jsonLines.slice(1, -1).map(line => line), // Middle lines
-        jsonLines[jsonLines.length - 1] + ";" // Last line: };
-    ];
+
+    // Handle single-line JSON as a special case
+    let newObjLines;
+    if (jsonLines.length === 1) {
+        // Single-line JSON: produce "const obj = {...};" on one line
+        newObjLines = ["const obj = " + jsonLines[0] + ";"];
+    } else {
+        // Multi-line JSON: format across multiple lines
+        newObjLines = [
+            "const obj = " + jsonLines[0], // First line: const obj = {
+            ...jsonLines.slice(1, -1).map(line => line), // Middle lines
+            jsonLines[jsonLines.length - 1] + ";" // Last line: };
+        ];
+    }
 
     // Replace the old obj definition with the new one
     const newExecArray = [
